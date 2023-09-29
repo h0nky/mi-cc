@@ -5,12 +5,14 @@
         <th>Video Name</th>
         <th>Author</th>
         <th>Categories</th>
+        <!-- <th>HQ Format</th>
+        <th>Release Date</th> -->
         <th>Options</th>
       </tr>
     </thead>
 
     <tbody>
-      <tr *ngFor="let video of videos; index as i; first as isFirst">
+      <tr *ngFor="let video of videos$ | async; index as i; first as isFirst">
         <td>{{ video.name }}</td>
         <td>{{ video.author }}</td>
         <td>{{ video.categories.join(", ") }}</td>
