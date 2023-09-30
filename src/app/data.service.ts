@@ -1,12 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { API } from './constants';
-import { Author, Category, ProcessedVideo } from './interfaces';
 import { Observable, forkJoin, map, switchMap } from 'rxjs';
+import { API } from './constants';
+import { Author, CategoriesMap, Category, Format, ProcessedVideo } from './interfaces';
 
-interface CategoriesMap {
-  [key: string]: string
-}
 
 @Injectable({
   providedIn: 'root',
@@ -23,41 +20,54 @@ export class DataService {
   }
 
   getVideos(): Observable<ProcessedVideo[]> {
-    const categories = this.getCategories();
-    const authors = this.getAuthors();
-
-    const categoriesMap: Observable<CategoriesMap> = categories.pipe(
-      map(categories => categories.reduce((acc, curr) => {
-        acc = { ...acc, [curr.id]: curr.name }
-        return acc;
-      }, {})),
+    const categoriesMap$ = this.getCategories().pipe(
+      map(categories => this.createCategoriesMap(categories))
     )
 
-    return authors.pipe(
+    return this.getAuthors().pipe(
       switchMap(authors => {
-        const videoObservables = authors.flatMap(({ name: authorName, videos }) => {
-          return videos.map(({ id: videoId, name: videoName, catIds }) => {
-            const categoryObservable = catIds.map(catId => {
-              return categoriesMap.pipe(
-                map(categoryMap => categoryMap[catId])
-              );
-            });
-
-            return forkJoin(categoryObservable).pipe(
-              map(categories => ({
-                id: videoId,
-                name: videoName,
-                author: authorName,
-                categories,
-                format: '',
-                releaseDate: '',
-              }))
-            )
-          })
-        });
-
-        return forkJoin(videoObservables);
+        const videoObservables$ = this.createVideoObservables(authors, categoriesMap$);
+        return forkJoin(videoObservables$);
       })
     );
+  }
+
+  private createVideoObservables(authors: Author[], categoriesMap$: Observable<CategoriesMap>): Observable<ProcessedVideo>[] {
+    return authors.flatMap(({ name: authorName, videos }) => {
+      return videos.map(({ id: videoId, name: videoName, catIds, releaseDate, formats }) => {
+        const categoryObservables$ = catIds.map(catId =>
+          categoriesMap$.pipe(map(categoryMap => categoryMap[catId]))
+        );
+  
+        const newFormats: Format[] = Object.entries(formats).map(([key, format]) => ({ ...format, key }));
+        const highestResolutionFormat = this.getHQFormat(newFormats);
+  
+        return forkJoin(categoryObservables$).pipe(
+          map(categories => ({
+            id: videoId,
+            name: videoName,
+            author: authorName,
+            categories,
+            releaseDate,
+            format: highestResolutionFormat,
+          }))
+        );
+      });
+    });
+  }
+
+  private createCategoriesMap(categories: Category[]): CategoriesMap {
+    return categories.reduce((acc, curr) => {
+      acc = { ...acc, [curr.id]: curr.name }
+      return acc;
+    }, {})
+  }
+
+  private getHQFormat(newFormats: Format[]): string {
+    const sortedFormats = newFormats.sort((a, b) => {
+      return parseInt(b.res) - parseInt(a.res) && b.size - a.size;
+    });
+    const { key, res } = sortedFormats[0];
+    return `${key} ${res}`;
   }
 }
