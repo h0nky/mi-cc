@@ -24,12 +24,14 @@ export class DataService {
       map(categories => this.createCategoriesMap(categories))
     )
 
-    return this.getAuthors().pipe(
+    const processedVideos$ = this.getAuthors().pipe(
       switchMap(authors => {
         const videoObservables$ = this.createVideoObservables(authors, categoriesMap$);
         return forkJoin(videoObservables$);
       })
     );
+
+    return processedVideos$;
   }
 
   private createVideoObservables(authors: Author[], categoriesMap$: Observable<CategoriesMap>): Observable<ProcessedVideo>[] {
@@ -57,8 +59,8 @@ export class DataService {
   }
 
   private createCategoriesMap(categories: Category[]): CategoriesMap {
-    return categories.reduce((acc, curr) => {
-      acc = { ...acc, [curr.id]: curr.name }
+    return categories.reduce((acc, { id, name }) => {
+      acc = { ...acc, [id]: name }
       return acc;
     }, {})
   }

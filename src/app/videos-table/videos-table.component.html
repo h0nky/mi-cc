@@ -1,4 +1,8 @@
 <div class="wrapper">
+  <div>
+    <input [(ngModel)]="filterCriteria" />
+    <button (click)="onFilterClick()">Search</button>
+  </div>
   <table class="table">
     <thead>
       <tr>

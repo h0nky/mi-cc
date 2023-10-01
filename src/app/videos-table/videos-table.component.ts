@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ProcessedVideo } from '../interfaces';
 import { DataService } from '../data.service';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 
 @Component({
@@ -10,13 +10,25 @@ import { Observable } from 'rxjs';
   styleUrls: ['./videos-table.component.css'],
 })
 export class VideosTableComponent implements OnInit {
-  @Input() videos$: Observable<ProcessedVideo[]> | null;
+  @Input() videos$: Observable<ProcessedVideo[]> | undefined;
+  filterCriteria: string;
 
   constructor(private dataService: DataService) {
-    this.videos$ = null;
+    this.videos$ = undefined;
+    this.filterCriteria = '';
   }
 
   ngOnInit(): void {
     this.videos$ = this.dataService.getVideos();
+  }
+
+  onFilterClick(): void {
+    this.videos$ = this.videos$?.pipe(
+      map(videos =>
+        videos.filter(video => {
+          console.log(this.filterCriteria);
+          return video.name.includes(this.filterCriteria);
+        }))
+    )
   }
 }
