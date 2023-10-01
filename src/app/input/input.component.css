@@ -1,0 +1,7 @@
+.input {
+    cursor: pointer;
+    border: 1px solid var(--lighter-gray);
+    min-height: 36px;
+    border-radius: 4px;
+    padding: 8px;
+}

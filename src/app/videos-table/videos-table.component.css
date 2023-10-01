@@ -10,6 +10,20 @@
 .table th,
 .table td {
   padding: 16px;
-  border: 1px solid;
+  border: 1px solid var(--lighter-gray);
   text-align: left;
+}
+
+.table tbody tr:nth-child(odd) {
+  background-color: var(--lighter-gray);
+}
+
+.search-input-wrapper {
+  margin-bottom: 16px;
+  height: 36px;
+}
+
+.table-options-cell {
+  display: flex;
+  justify-content: space-around;
 }

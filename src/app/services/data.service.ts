@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, forkJoin, map, switchMap } from 'rxjs';
-import { API } from './constants';
-import { Author, CategoriesMap, Category, Format, ProcessedVideo } from './interfaces';
+import { API } from '../constants';
+import { Author, CategoriesMap, Category, Format, ProcessedVideo } from '../interfaces';
 
 
 @Injectable({

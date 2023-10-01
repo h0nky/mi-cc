@@ -1,7 +1,7 @@
 <div class="wrapper">
-  <div>
-    <input [(ngModel)]="filterCriteria" />
-    <button (click)="onFilterClick()">Search</button>
+  <div class="search-input-wrapper">
+    <mi-input [(ngModel)]="filterCriteria" />
+    <mi-button buttonType="secondary" (click)="onFilterApply()" [text]="'Search'"/>
   </div>
   <table class="table">
     <thead>
@@ -23,8 +23,10 @@
         <td>{{ video.format }}</td>
         <td>{{ video.releaseDate }}</td>
         <td>
-          <mi-button [text]="'Edit'"></mi-button>
-          <mi-button [text]="'Delete'"></mi-button>
+          <div class="table-options-cell">
+            <mi-button buttonType="transparent" [text]="'Edit'" (click)="onVideoEdit()" />
+            <mi-button buttonType="tertiary" [text]="'Delete'" (click)="onVideoDelete()" />
+          </div>
         </td>
       </tr>
     </tbody>

@@ -5,8 +5,21 @@
   color: var(--white);
   cursor: pointer;
   background: var(--light-gray);
+  height: 100%;
 }
 
 .primary {
   background: var(--green);
+}
+
+.secondary {
+  background: var(--azure);
+}
+
+.tertiary {
+  background: var(--pickled-radish);
+}
+
+.transparent {
+  background: var(--january-blue); 
 }

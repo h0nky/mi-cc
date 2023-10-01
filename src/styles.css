@@ -1,9 +1,12 @@
 :root {
   --white: #fff;
-  --lighter-gray: #e3e3e3;
+  --lighter-gray: #F4F4F4;
   --light-gray: #6e6e6e;
-  --dark-gray: #333;
+  --dark-gray: #333A41;
   --green: #00ab35;
+  --azure: #007DFF;
+  --january-blue: #00A5BB;
+  --pickled-radish: #F0143E;
 }
 
 body {
