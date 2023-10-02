@@ -1,8 +1,8 @@
 import { Observable, map, of } from 'rxjs';
 import { Component, Input, OnInit } from '@angular/core';
 
-import { ProcessedVideo } from '../interfaces';
-import { DataService } from '../services/data.service';
+import { ProcessedVideo } from '../../interfaces';
+import { DataService } from '../../services/data.service';
 
 
 @Component({

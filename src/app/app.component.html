@@ -1,11 +1,11 @@
 <header class="header">
-  Videos
-  <mi-button [text]="'Add video'"></mi-button>
+  <a routerLink="">Videos</a>
+  <mi-button routerLink="add-video" [text]="'Add video'" />
 </header>
 
 <main class="main">
   <h1>VManager Demo v0.0.1</h1>
-  <mi-videos-table></mi-videos-table>
+  <router-outlet></router-outlet>
 </main>
 
 <footer class="footer">VManager Demo v0.0.1</footer>
