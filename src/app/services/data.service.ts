@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, forkJoin, map, switchMap } from 'rxjs';
 import { API } from '../constants';
 import { Author, CategoriesMap, Category, Format, ProcessedVideo } from '../interfaces';
+import { getHttpHeaders } from '../utils/getHttpHeaders';
 
 
 @Injectable({
@@ -24,14 +25,19 @@ export class DataService {
       map(categories => this.createCategoriesMap(categories))
     )
 
-    const processedVideos$ = this.getAuthors().pipe(
+    return this.getAuthors()
+    .pipe(
       switchMap(authors => {
         const videoObservables$ = this.createVideoObservables(authors, categoriesMap$);
         return forkJoin(videoObservables$);
       })
     );
+  }
 
-    return processedVideos$;
+  setVideo(newVideoData: Author, authorId: number): Observable<HttpResponse<Object>> {
+    const payload = JSON.stringify(newVideoData);
+    const httpOptions = getHttpHeaders();
+    return this.http.put(`${API}/authors/${authorId}`, payload, httpOptions);
   }
 
   private createVideoObservables(authors: Author[], categoriesMap$: Observable<CategoriesMap>): Observable<ProcessedVideo>[] {

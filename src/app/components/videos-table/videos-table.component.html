@@ -21,7 +21,7 @@
         <td>{{ video.author }}</td>
         <td>{{ video.categories.join(", ") }}</td>
         <td>{{ video.format }}</td>
-        <td>{{ video.releaseDate }}</td>
+        <td>{{ video.releaseDate }} || ""</td>
         <td>
           <div class="table-options-cell">
             <mi-button buttonType="transparent" [text]="'Edit'" (click)="onVideoEdit()" />

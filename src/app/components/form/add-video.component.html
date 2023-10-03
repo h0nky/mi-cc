@@ -1,0 +1,28 @@
+
+<form (ngSubmit)="onAddVideoFormSubmitted(addVideoFormData)">
+  <div class="add-video__wrapper">
+      <div class="add-video__input-wrapper">
+        <label for="authorSelect">Video name</label>
+        <mi-input name="videoTitle" [(ngModel)]="addVideoFormData.videoTitle" [placeholder]="placeholder" required/>
+      </div>
+      <div class="add-video__input-wrapper">
+        <label for="authorSelect">Video author</label>
+        <select id="authorSelect" [(ngModel)]="addVideoFormData.selectedAuthor" name="selectedAuthor">
+          <option value="">Video author</option>
+          <option *ngFor="let author of authors$ | async" [value]="author.id">{{ author.name }}</option>
+        </select>
+      </div>
+      <div class="add-video__input-wrapper">
+        <label for="categoriesSelect">Video category</label>
+        <select id="categoriesSelect" [(ngModel)]="addVideoFormData.selectedCategories" name="selectedCategories" multiple>
+          <option *ngFor="let category of categories$ | async" [value]="category.id">{{ category.name }}</option>
+        </select>
+      </div>
+      <div>
+        <mi-button type="submit" buttonType="secondary" [text]="'Submit'" />
+        <mi-button buttonType="tertiary" [text]="'Cancel'" (click)="onAddVideoCancelClicked()" />
+      </div>
+    </div>
+  </form>
+  
+  

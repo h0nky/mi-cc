@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AddVideoComponent } from './add-video.component';
 
-describe('AddVideoComponent', () => {
+describe('FormComponent', () => {
   let component: AddVideoComponent;
   let fixture: ComponentFixture<AddVideoComponent>;
 

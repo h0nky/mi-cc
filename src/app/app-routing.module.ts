@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { HomeComponent } from './components/home/home.component';
-import { AddVideoComponent } from './components/add-video/add-video.component';
 import { EditVideoComponent } from './components/edit-video/edit-video.component';
+import { AddVideoComponent } from './components/form/add-video.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },

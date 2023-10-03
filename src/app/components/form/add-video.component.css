@@ -1,0 +1,11 @@
+.add-video__wrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+}
+
+.add-video__input-wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}

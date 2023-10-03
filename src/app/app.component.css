@@ -7,6 +7,11 @@
   color: var(--white);
 }
 
+.header__home-link {
+  color: var(--white);
+  text-decoration: none;
+}
+
 .main {
   padding: 0 16px;
 }

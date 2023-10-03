@@ -9,11 +9,10 @@ import { ButtonComponent } from './components/button/button.component';
 import { VideosTableComponent } from './components/videos-table/videos-table.component';
 import { InputComponent } from './components/input/input.component';
 import { HomeComponent } from './components/home/home.component';
-import { AddVideoComponent } from './components/add-video/add-video.component';
-import { EditVideoComponent } from './components/edit-video/edit-video.component';
+import { AddVideoComponent } from './components/form/add-video.component';
 
 @NgModule({
-  declarations: [AppComponent, ButtonComponent, VideosTableComponent, InputComponent, HomeComponent, AddVideoComponent, EditVideoComponent],
+  declarations: [AppComponent, ButtonComponent, VideosTableComponent, InputComponent, HomeComponent, AddVideoComponent],
   imports: [BrowserModule, HttpClientModule, AppRoutingModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent],
