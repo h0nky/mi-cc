@@ -4,4 +4,9 @@
     min-height: 36px;
     border-radius: 4px;
     padding: 8px;
+    width: 100%;
+}
+
+::placeholder {
+    color: var(--dark-gray);
 }

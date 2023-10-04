@@ -19,6 +19,7 @@
 }
 
 .search-input-wrapper {
+  display: flex;
   margin-bottom: 16px;
   height: 36px;
 }

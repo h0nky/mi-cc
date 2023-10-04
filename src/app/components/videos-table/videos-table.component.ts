@@ -12,6 +12,7 @@ import { DataService } from '../../services/data.service';
 })
 export class VideosTableComponent implements OnInit {
   @Input() videos$: Observable<ProcessedVideo[]>;
+  @Input() placeholder: string = 'Video name'
   filterCriteria: string;
 
   constructor(private dataService: DataService) {

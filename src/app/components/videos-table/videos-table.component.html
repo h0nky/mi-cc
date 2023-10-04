@@ -1,6 +1,6 @@
 <div class="wrapper">
   <div class="search-input-wrapper">
-    <mi-input [(ngModel)]="filterCriteria" />
+    <mi-input [(ngModel)]="filterCriteria" [placeholder]="placeholder" />
     <mi-button buttonType="secondary" (click)="onFilterApply()" [text]="'Search'"/>
   </div>
   <table class="table">

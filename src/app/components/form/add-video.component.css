@@ -1,3 +1,41 @@
+mi-input {
+    width: 100%;
+}
+
+mi-button {
+    margin-right: 8px;
+}
+
+.select__single {
+    appearance: none; /* Removes default arrow button on some browsers */
+    -webkit-appearance: none; /* Removes default arrow button on Safari */
+    -moz-appearance: none; /* Removes default arrow button on Firefox */
+    padding: 5px 10px; 
+    border-radius: 3px; /* Add rounded corners */
+    cursor: pointer; /* Change cursor on hover */
+    border: 1px solid var(--lighter-gray);
+    min-height: 36px;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.select__multiple {
+    appearance: none; /* Removes default arrow button on some browsers */
+    -webkit-appearance: none; /* Removes default arrow button on Safari */
+    -moz-appearance: none; /* Removes default arrow button on Firefox */
+    padding: 8px 10px; 
+    border-radius: 3px; /* Add rounded corners */
+    cursor: pointer; /* Change cursor on hover */
+    border: 1px solid var(--lighter-gray);
+    min-height: 36px;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.add-video-wrapper {
+    border-bottom: 1px solid var(--lighter-gray)
+}
+
 .add-video__wrapper {
     display: flex;
     flex-direction: column;
@@ -8,4 +46,15 @@
     display: flex;
     justify-content: space-between;
     margin-bottom: 16px;
+    align-items: center;
+}
+
+.add-video__buttons-wrapper {
+    display: flex;
+    width: 100%;
+    padding: 16px;
+}
+
+mi-button {
+    margin-right: 8px;
 }
