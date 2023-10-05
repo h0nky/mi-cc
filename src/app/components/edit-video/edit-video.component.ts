@@ -1,12 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 
 import { Author, Category, EditVideoView, VideoFormData } from 'src/app/interfaces';
 import { DataService } from 'src/app/services/dataservice/data.service';
 import { VideoService } from 'src/app/services/videoservice/video.service';
-import { combinePayload } from 'src/app/utils/combineFormPayload';
-import { normalizeFormData } from 'src/app/utils/normalizeFormData';
+import { combineUpdateFormPayload } from 'src/app/utils/combineFormPayload';
 
 @Component({
   selector: 'mi-edit-video',
@@ -63,30 +62,29 @@ export class EditVideoComponent implements OnInit {
     }
   }
 
-
-  onAddVideoFormSubmitted(formData: VideoFormData): void {
+  onFormSubmit(formData: VideoFormData): void {
     const authorId = parseInt(formData.selectedAuthor[0]);
 
     if (isNaN(authorId)) {
       throw new Error('Invalid author ID');
     }
 
-    const newVideoNormalized = normalizeFormData(formData);
-    const normalizedFormDataObservable$ = of(newVideoNormalized);
-    const combinedPayload$ = combinePayload(this.authors$, normalizedFormDataObservable$, authorId);
+    const combinedPayload$ = this.authors$.pipe(
+      map(authors => combineUpdateFormPayload(authors, authorId, this.itemId, formData))
+    )
     
-    combinedPayload$
-    .subscribe(payload => {
-      this.videoService
-      .setNewVideo(payload, authorId)
-      .subscribe(response => {
-        if (response.ok) {
-          this.onRedirectToMain();
-        } else {
-          console.error('An error occured while adding new video');
-        }
-      });
+    combinedPayload$.subscribe(payload => {
+      this.videoService.setNewVideo(payload, authorId)
+      .subscribe(response => this.handleResponse(response.ok));
     })
+  }
+
+  handleResponse(responseSuccess: boolean): void {
+    if (responseSuccess) {
+      this.onRedirectToMain();
+    } else {
+      console.error('An error occured while adding new video');
+    }
   }
 
   onAddVideoCancelClicked(): void {

@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 import { DataService } from 'src/app/services/dataservice/data.service';
 import { Author, Category, VideoFormData } from 'src/app/interfaces';
 import { normalizeFormData } from 'src/app/utils/normalizeFormData';
-import { combinePayload } from 'src/app/utils/combineFormPayload';
+import { combineAddFormPayload } from 'src/app/utils/combineFormPayload';
 import { VideoService } from 'src/app/services/videoservice/video.service';
 
 
@@ -46,7 +46,7 @@ export class AddVideoComponent implements OnInit {
     }
 
     const normalizedFormData$ = of(normalizeFormData(formData));
-    const combinedPayload$ = combinePayload(this.authors$, normalizedFormData$, authorId);
+    const combinedPayload$ = combineAddFormPayload(this.authors$, normalizedFormData$, authorId);
     
     combinedPayload$.subscribe(payload => {
       this.videoService.setNewVideo(payload, authorId)

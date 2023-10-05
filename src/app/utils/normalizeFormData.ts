@@ -1,4 +1,4 @@
-import { Video, VideoFormData } from "../interfaces";
+import { Video, VideoFormData } from "src/app/interfaces";
 
 export const normalizeFormData = (formData: VideoFormData): Video => {
     return {
