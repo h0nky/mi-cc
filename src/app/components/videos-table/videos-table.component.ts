@@ -33,7 +33,7 @@ export class VideosTableComponent implements OnInit {
   }
 
   onVideoEdit(itemId: number): void {
-    this.router.navigate([`video/${itemId}`]);
+    this.router.navigate(['video', itemId]);
   }
 
   onVideoDelete(): void {

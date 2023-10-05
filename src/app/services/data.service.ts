@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable, forkJoin, map, switchMap } from 'rxjs';
+import { Observable, find, forkJoin, map, switchMap } from 'rxjs';
 import { API } from '../constants';
 import { Author, CategoriesMap, Category, Format, ProcessedVideo } from '../interfaces';
 import { getHttpHeaders } from '../utils/getHttpHeaders';
@@ -32,6 +32,12 @@ export class DataService {
         return forkJoin(videoObservables$);
       })
     );
+  }
+
+  getVideo(videoId: number): Observable<ProcessedVideo | undefined> {
+    return this.getVideos().pipe(
+      map(videos => videos.find(({ id }) => id === videoId))
+    )
   }
 
   setVideo(newVideoData: Author, authorId: number): Observable<HttpResponse<Object>> {
