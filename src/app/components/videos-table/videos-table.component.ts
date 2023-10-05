@@ -1,8 +1,9 @@
+import { Router } from '@angular/router';
 import { Observable, map, of } from 'rxjs';
 import { Component, Input, OnInit } from '@angular/core';
 
-import { ProcessedVideo } from '../../interfaces';
-import { DataService } from '../../services/data.service';
+import { ProcessedVideo } from 'src/app/interfaces';
+import { DataService } from 'src/app/services/data.service';
 
 
 @Component({
@@ -15,7 +16,7 @@ export class VideosTableComponent implements OnInit {
   @Input() placeholder: string = 'Video name'
   filterCriteria: string;
 
-  constructor(private dataService: DataService) {
+  constructor(private dataService: DataService, private router: Router) {
     this.videos$ = of([]);
     this.filterCriteria = '';
   }
@@ -27,14 +28,12 @@ export class VideosTableComponent implements OnInit {
   onFilterApply(): void {
     this.videos$ = this.videos$?.pipe(
       map(videos =>
-        videos.filter(video => {
-          return video.name.includes(this.filterCriteria);
-        }))
+        videos.filter(({ name }) => name.includes(this.filterCriteria)))
     )
   }
 
-  onVideoEdit(): void {
-    console.log('onVideoEdit!');
+  onVideoEdit(itemId: number): void {
+    this.router.navigate([`video/${itemId}`]);
   }
 
   onVideoDelete(): void {
