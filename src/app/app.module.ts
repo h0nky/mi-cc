@@ -11,11 +11,13 @@ import { InputComponent } from 'src/app/components/input/input.component';
 import { HomeComponent } from 'src/app/components/home/home.component';
 import { AddVideoComponent } from 'src/app/components/add-video/add-video.component';
 import { EditVideoComponent } from 'src/app/components/edit-video/edit-video.component';
+import { DataService } from './services/dataservice/data.service';
+import { VideoService } from './services/videoservice/video.service';
 
 @NgModule({
   declarations: [AppComponent, ButtonComponent, VideosTableComponent, InputComponent, HomeComponent, AddVideoComponent, EditVideoComponent],
   imports: [BrowserModule, HttpClientModule, AppRoutingModule, FormsModule],
-  providers: [],
+  providers: [DataService, VideoService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

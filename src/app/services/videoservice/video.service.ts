@@ -1,32 +1,25 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable, find, forkJoin, map, switchMap } from 'rxjs';
-import { API } from '../constants';
-import { Author, CategoriesMap, Category, Format, ProcessedVideo } from '../interfaces';
-import { getHttpHeaders } from '../utils/getHttpHeaders';
+import { Observable, forkJoin, map, switchMap } from 'rxjs';
+
+import { Author, CategoriesMap, Category, EditVideoView, Format, ProcessedVideo } from 'src/app/interfaces';
+import { DataService } from 'src/app/services/dataservice/data.service';
+import { getHttpHeaders } from 'src/app/utils/getHttpHeaders';
+import { API } from 'src/app/constants';
 
 
 @Injectable({
   providedIn: 'root',
 })
-export class DataService {
-  constructor(private http: HttpClient) {}
+export class VideoService {
+  constructor(private http: HttpClient, private dataService: DataService) {}
 
-  getCategories(): Observable<Category[]> {
-    return this.http.get<Category[]>(`${API}/categories`);
-  }
-
-  getAuthors(): Observable<Author[]> {
-    return this.http.get<Author[]>(`${API}/authors`);
-  }
-
-  getVideos(): Observable<ProcessedVideo[]> {
-    const categoriesMap$ = this.getCategories().pipe(
-      map(categories => this.createCategoriesMap(categories))
+  getProcessedVideos(): Observable<ProcessedVideo[]> {
+    const categoriesMap$ = this.dataService.getCategories().pipe(
+      map(categories => this.getCategoriesMap(categories))
     )
 
-    return this.getAuthors()
-    .pipe(
+    return this.dataService.getAuthors().pipe(
       switchMap(authors => {
         const videoObservables$ = this.createVideoObservables(authors, categoriesMap$);
         return forkJoin(videoObservables$);
@@ -34,13 +27,27 @@ export class DataService {
     );
   }
 
-  getVideo(videoId: number): Observable<ProcessedVideo | undefined> {
-    return this.getVideos().pipe(
-      map(videos => videos.find(({ id }) => id === videoId))
+  getVideo(authorName: string, videoId: number): Observable<EditVideoView> {
+    return this.dataService.getAuthors().pipe(
+      map(authors => {
+        const author = authors.find(({ name }) => name === authorName);
+
+        if (!author) {
+          throw new Error(`Author with name ${authorName} not found`);
+        }
+
+        const video = author?.videos.find(({ id }) => id === videoId);
+
+        if (!video) {
+          throw new Error(`Video with ID ${videoId} not found for author ${authorName}`);
+        }
+
+        return { ...video, authorId: author?.id };
+      })
     )
   }
 
-  setVideo(newVideoData: Author, authorId: number): Observable<HttpResponse<Object>> {
+  setNewVideo(newVideoData: Author, authorId: number): Observable<HttpResponse<Object>> {
     const payload = JSON.stringify(newVideoData);
     const httpOptions = getHttpHeaders();
     return this.http.put(`${API}/authors/${authorId}`, payload, httpOptions);
@@ -70,7 +77,7 @@ export class DataService {
     });
   }
 
-  private createCategoriesMap(categories: Category[]): CategoriesMap {
+  private getCategoriesMap(categories: Category[]): CategoriesMap {
     return categories.reduce((acc, { id, name }) => {
       acc = { ...acc, [id]: name }
       return acc;

@@ -3,7 +3,7 @@ import { Observable, map, of } from 'rxjs';
 import { Component, Input, OnInit } from '@angular/core';
 
 import { ProcessedVideo } from 'src/app/interfaces';
-import { DataService } from 'src/app/services/data.service';
+import { VideoService } from 'src/app/services/videoservice/video.service';
 
 
 @Component({
@@ -16,13 +16,16 @@ export class VideosTableComponent implements OnInit {
   @Input() placeholder: string = 'Video name'
   filterCriteria: string;
 
-  constructor(private dataService: DataService, private router: Router) {
+  constructor(
+    private router: Router,
+    private videoService: VideoService
+  ) {
     this.videos$ = of([]);
     this.filterCriteria = '';
   }
 
   ngOnInit(): void {
-    this.videos$ = this.dataService.getVideos();
+    this.videos$ = this.videoService.getProcessedVideos();
   }
 
   onFilterApply(): void {
@@ -32,8 +35,8 @@ export class VideosTableComponent implements OnInit {
     )
   }
 
-  onVideoEdit(itemId: number): void {
-    this.router.navigate(['video', itemId]);
+  onVideoEdit(itemId: number, authorName: string): void {
+    this.router.navigate(['video', itemId, { params: authorName }]);
   }
 
   onVideoDelete(): void {

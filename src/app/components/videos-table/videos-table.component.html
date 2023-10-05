@@ -24,7 +24,7 @@
         <td>{{ video.releaseDate }}</td>
         <td>
           <div class="table-options-cell">
-            <mi-button buttonType="transparent" [text]="'Edit'" (click)="onVideoEdit(video.id)" />
+            <mi-button buttonType="transparent" [text]="'Edit'" (click)="onVideoEdit(video.id, video.author)" />
             <mi-button buttonType="tertiary" [text]="'Delete'" (click)="onVideoDelete()" />
           </div>
         </td>

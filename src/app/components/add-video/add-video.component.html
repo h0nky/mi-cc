@@ -2,7 +2,7 @@
   <div class="add-video-wrapper">
     <h2>Add a Video</h2>
   </div>
-  <form (ngSubmit)="onAddVideoFormSubmitted(addVideoFormData)">
+  <form (ngSubmit)="onFormSubmit(addVideoFormData)">
     <div class="add-video__wrapper">
         <div class="add-video__input-wrapper">
           <mi-input name="videoTitle" [(ngModel)]="addVideoFormData.videoTitle" [placeholder]="placeholder" required/>

@@ -1,25 +1,22 @@
 import { Observable, forkJoin, map } from "rxjs";
-import { Author, Video } from "../interfaces";
 
-const getUpdatedAuthor = ({ authors, newVideo }: { authors: Author[], newVideo: Video }, authorId: number): Author => {
-    const specificAuthor = authors.find(({ id }) => id === authorId);
-
-    if (!specificAuthor) {
-        throw new Error(`Author with id ${authorId} not found.`);
-    }
-
-    return {
-      ...specificAuthor,
-      videos: [...specificAuthor.videos, newVideo],
-    };
-}
+import { Author, Video } from "src/app/interfaces";
 
 export const combinePayload = (authors$: Observable<Author[]>, formData$: Observable<Video>, authorId: number): Observable<Author> => {
-    return forkJoin({
-        authors: authors$,
-        newVideo: formData$,
-      })
-      .pipe(
+    return forkJoin({ authors: authors$, newVideo: formData$ }).pipe(
         map(data => getUpdatedAuthor(data, authorId))
-      )
+    )
+}
+
+const getUpdatedAuthor = ({ authors, newVideo }: { authors: Author[], newVideo: Video }, authorId: number): Author => {
+  const specificAuthor = authors.find(({ id }) => id === authorId);
+
+  if (!specificAuthor) {
+      throw new Error(`Author with id ${authorId} not found.`);
+  }
+
+  return {
+    ...specificAuthor,
+    videos: [...specificAuthor.videos, newVideo],
+  };
 }

@@ -45,3 +45,12 @@ export interface VideoFormData {
   selectedAuthor: string [],
   selectedCategories: number[]
 }
+
+export interface EditVideoView {
+  authorId: number;
+  id: number;
+  catIds: number[];
+  name: string;
+  formats: Formats;
+  releaseDate: string;
+}
