@@ -6,55 +6,39 @@ mi-button {
     margin-right: var(--gap-unit);
 }
 
-.select__single {
+.select__single,
+.select__multiple
+ {
     appearance: none; /* Removes default arrow button on some browsers */
     -webkit-appearance: none; /* Removes default arrow button on Safari */
     -moz-appearance: none; /* Removes default arrow button on Firefox */
     padding: var(--gap-unit) calc(var(--gap-unit) * 2);
-    border-radius: 4px; /* Add rounded corners */
-    cursor: pointer; /* Change cursor on hover */
+    border-radius: var(--border-radius);
     border: 1px solid var(--lighter-gray);
-    min-height: 36px;
-    border-radius: 4px;
+    min-height: var(--input-height);
+    cursor: pointer;
     width: 100%;
 }
 
-.select__multiple {
-    appearance: none; /* Removes default arrow button on some browsers */
-    -webkit-appearance: none; /* Removes default arrow button on Safari */
-    -moz-appearance: none; /* Removes default arrow button on Firefox */
-    padding: var(--gap-unit) calc(var(--gap-unit) * 2);
-    border-radius: 4px; /* Add rounded corners */
-    cursor: pointer; /* Change cursor on hover */
-    border: 1px solid var(--lighter-gray);
-    min-height: 36px;
-    border-radius: 4px;
-    width: 100%;
+h2 {
+    border-bottom: 1px solid var(--lighter-gray);
+    padding-bottom: calc(var(--gap-unit) * 2);
 }
 
-.add-video-wrapper {
-    border-bottom: 1px solid var(--lighter-gray)
-}
-
-.add-video__wrapper {
+.edit-video__container {
     display: flex;
     flex-direction: column;
-    padding: calc(var(--gap-unit) * 2);
 }
 
-.add-video__input-wrapper {
+.edit-video__input-wrapper {
     display: flex;
     justify-content: space-between;
-    margin-bottom: calc(var(--gap-unit) * 2);
     align-items: center;
+    margin-bottom: calc(var(--gap-unit) * 2);
 }
 
-.add-video__buttons-wrapper {
+.edit-video__buttons-wrapper {
     display: flex;
     width: 100%;
-    padding: calc(var(--gap-unit) * 2);
-}
-
-mi-button {
-    margin-right: var(--gap-unit);
+    padding: calc(var(--gap-unit) * 2) 0;
 }

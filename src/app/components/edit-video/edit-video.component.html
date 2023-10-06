@@ -1,27 +1,23 @@
-<div>
-    <div class="add-video-wrapper">
-      <h2>Edit a Video</h2>
+<h2>Edit a Video</h2>
+<form (ngSubmit)="onFormSubmit(formData)">
+  <div class="edit-video__container">
+      <div class="edit-video__input-wrapper">
+        <mi-input name="videoTitle" [(ngModel)]="formData.videoTitle" [placeholder]="placeholder" required/>
+      </div>
+      <div class="edit-video__input-wrapper">
+        <select class="select__single" id="authorSelect" [(ngModel)]="formData.selectedAuthor" name="selectedAuthor">
+          <option value="">Video author</option>
+          <option *ngFor="let author of authors$ | async" [value]="author.id">{{ author.name }}</option>
+        </select>
+      </div>
+      <div class="edit-video__input-wrapper">
+        <select class="select__multiple" id="categoriesSelect" [(ngModel)]="formData.selectedCategories" name="selectedCategories" multiple>
+          <option *ngFor="let category of categories$ | async" [value]="category.id">{{ category.name }}</option>
+        </select>
+      </div>
     </div>
-    <form (ngSubmit)="onFormSubmit(formData)">
-      <div class="add-video__wrapper">
-          <div class="add-video__input-wrapper">
-            <mi-input name="videoTitle" [(ngModel)]="formData.videoTitle" [placeholder]="placeholder" required/>
-          </div>
-          <div class="add-video__input-wrapper">
-            <select class="select__single" id="authorSelect" [(ngModel)]="formData.selectedAuthor" name="selectedAuthor">
-              <option value="">Video author</option>
-              <option *ngFor="let author of authors$ | async" [value]="author.id">{{ author.name }}</option>
-            </select>
-          </div>
-          <div class="add-video__input-wrapper">
-            <select class="select__multiple" id="categoriesSelect" [(ngModel)]="formData.selectedCategories" name="selectedCategories" multiple>
-              <option *ngFor="let category of categories$ | async" [value]="category.id">{{ category.name }}</option>
-            </select>
-          </div>
-        </div>
-        <div class="add-video__buttons-wrapper">
-          <mi-button type="submit" buttonType="secondary" [text]="'Submit'" />
-          <mi-button buttonType="tertiary" [text]="'Cancel'" (click)="onAddVideoCancelClicked()" />
-        </div>
-      </form>
-  </div>
+    <div class="edit-video__buttons-wrapper">
+      <mi-button type="submit" buttonType="secondary" [text]="'Submit'" />
+      <mi-button buttonType="tertiary" [text]="'Cancel'" (click)="onAddVideoCancelClicked()" />
+    </div>
+</form>

@@ -73,7 +73,7 @@ export class EditVideoComponent implements OnInit {
       map(authors => combineUpdateFormPayload(authors, authorId, this.itemId, formData))
     )
     
-    const subscription = combinedPayload$.subscribe(payload => {
+    combinedPayload$.subscribe(payload => {
       this.videoService.setNewVideo(payload, authorId)
       .subscribe(response => this.handleResponse(response.ok));
     })
