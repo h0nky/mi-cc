@@ -1,12 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable, catchError, map, of } from 'rxjs';
 
 import { DataService } from 'src/app/services/dataservice/data.service';
-import { Author, Category, VideoFormData } from 'src/app/interfaces';
+import { Author, Category, Video, VideoFormData } from 'src/app/interfaces';
 import { normalizeFormData } from 'src/app/utils/normalizeFormData';
 import { combineAddFormPayload } from 'src/app/utils/combineFormPayload';
 import { VideoService } from 'src/app/services/videoservice/video.service';
+import { INVALID_AUTHOR_ID_ERROR, NORMALIZE_DATA_ERROR, VIDEO_UPDATE_ERROR } from 'src/app/constants';
 
 
 @Component({
@@ -42,23 +43,34 @@ export class AddVideoComponent implements OnInit {
     const authorId = parseInt(formData.selectedAuthor[0]);
 
     if (isNaN(authorId)) {
-      throw new Error('Invalid author ID');
+      throw new Error(INVALID_AUTHOR_ID_ERROR);
     }
 
-    const normalizedFormData$ = of(normalizeFormData(formData));
+    const normalizedFormData$ = this.getNormalizedFormData$(formData);
     const combinedPayload$ = combineAddFormPayload(this.authors$, normalizedFormData$, authorId);
     
     combinedPayload$.subscribe(payload => {
       this.videoService.setNewVideo(payload, authorId)
       .subscribe(response => this.handleResponse(response.ok));
     })
-  }
+}
+
+private getNormalizedFormData$(formData: VideoFormData): Observable<Video> {
+  return this.videoService.getFullVideoIdList().pipe(
+    // Take last video id to create a video with unique id
+    map(ids => normalizeFormData(formData, ids[ids.length -1])),
+    catchError(error => {
+      console.error(NORMALIZE_DATA_ERROR, error);
+      return of([]) as unknown as Observable<Video>;
+    })
+  )
+}
 
 handleResponse(responseSuccess: boolean): void {
   if (responseSuccess) {
     this.onRedirectToMain();
   } else {
-    console.error('An error occured while adding new video');
+    console.error(VIDEO_UPDATE_ERROR);
   }
 }
 

@@ -5,7 +5,7 @@ import { Observable, forkJoin, map, switchMap } from 'rxjs';
 import { Author, CategoriesMap, Category, EditVideoView, Format, ProcessedVideo } from 'src/app/interfaces';
 import { DataService } from 'src/app/services/dataservice/data.service';
 import { getHttpHeaders } from 'src/app/utils/getHttpHeaders';
-import { API } from 'src/app/constants';
+import { API, INVALID_AUTHOR_ID_ERROR, INVALID_VIDEO_ID_ERROR } from 'src/app/constants';
 
 
 @Injectable({
@@ -33,16 +33,31 @@ export class VideoService {
         const author = authors.find(({ name }) => name === authorName);
 
         if (!author) {
-          throw new Error(`Author with name ${authorName} not found`);
+          throw new Error(INVALID_AUTHOR_ID_ERROR);
         }
 
         const video = author?.videos.find(({ id }) => id === videoId);
 
         if (!video) {
-          throw new Error(`Video with ID ${videoId} not found for author ${authorName}`);
+          throw new Error(INVALID_VIDEO_ID_ERROR);
         }
 
         return { ...video, authorId: author?.id };
+      })
+    )
+  }
+
+  getFullVideoIdList(): Observable<number[]> {
+    return this.dataService.getAuthors().pipe(
+      map(authors => {
+        const videoIds: number[] = [];
+        authors.forEach(author => {
+          author.videos.forEach(video => {
+            videoIds.push(video.id);
+          });
+        });
+    
+        return videoIds;
       })
     )
   }

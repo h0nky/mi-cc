@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, map, of } from 'rxjs';
+import { Observable, combineLatest, map, of } from 'rxjs';
+import { INVALID_AUTHOR_ID_ERROR, VIDEO_UPDATE_ERROR } from 'src/app/constants';
 
 import { Author, Category, EditVideoView, VideoFormData } from 'src/app/interfaces';
 import { DataService } from 'src/app/services/dataservice/data.service';
@@ -66,12 +67,18 @@ export class EditVideoComponent implements OnInit {
     const authorId = parseInt(formData.selectedAuthor[0]);
 
     if (isNaN(authorId)) {
-      throw new Error('Invalid author ID');
+      throw new Error(INVALID_AUTHOR_ID_ERROR);
     }
 
-    const combinedPayload$ = this.authors$.pipe(
-      map(authors => combineUpdateFormPayload(authors, authorId, this.itemId, formData))
-    )
+    const combinedPayload$ = combineLatest([
+      this.videoService.getFullVideoIdList(),
+      this.authors$
+    ]).pipe(
+      map(([ids, authors]) =>
+        // Take last video id to create a video with unique id
+        combineUpdateFormPayload(authors, authorId, this.itemId, formData, ids[ids.length - 1])
+      )
+    );
     
     combinedPayload$.subscribe(payload => {
       this.videoService.setNewVideo(payload, authorId)
@@ -83,7 +90,7 @@ export class EditVideoComponent implements OnInit {
     if (responseSuccess) {
       this.onRedirectToMain();
     } else {
-      console.error('An error occured while adding new video');
+      console.error(VIDEO_UPDATE_ERROR);
     }
   }
 

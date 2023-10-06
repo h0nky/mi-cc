@@ -1,8 +1,8 @@
 import { Video, VideoFormData } from "src/app/interfaces";
 
-export const normalizeFormData = (formData: VideoFormData): Video => {
+export const normalizeFormData = (formData: VideoFormData, lastId: number): Video => {
     return {
-        id: Math.random(),
+        id: lastId++ || 0,
         catIds: formData.selectedCategories,
         name: formData.videoTitle,
         formats: { 'one': { res: "1080p", size: 1000 }},

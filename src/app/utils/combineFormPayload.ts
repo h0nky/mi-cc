@@ -2,6 +2,7 @@ import { Observable, forkJoin, map } from "rxjs";
 
 import { Author, Video, VideoFormData } from "src/app/interfaces";
 import { normalizeFormData } from "src/app/utils/normalizeFormData";
+import { INVALID_AUTHOR_ID_ERROR } from "src/app/constants";
 
 // Add video form
 export const combineAddFormPayload = (authors$: Observable<Author[]>, formData$: Observable<Video>, authorId: number): Observable<Author> => {
@@ -14,7 +15,7 @@ const getUpdatedAuthor = ({ authors, newVideo }: { authors: Author[], newVideo: 
   const specificAuthor = authors.find(({ id }) => id === authorId);
 
   if (!specificAuthor) {
-      throw new Error(`Author with id ${authorId} not found.`);
+    throw new Error(INVALID_AUTHOR_ID_ERROR);
   }
 
   return {
@@ -24,18 +25,17 @@ const getUpdatedAuthor = ({ authors, newVideo }: { authors: Author[], newVideo: 
 }
 
 
-// Edit video form
-export const combineUpdateFormPayload = (authors: Author[], authorId: number, videoId: number, formData: VideoFormData): Author => {
+export const combineUpdateFormPayload = (authors: Author[], authorId: number, videoId: number, formData: VideoFormData, lastId: number): Author => {
   const author = authors.find(({ id }) => id === authorId);
 
   if (!author) {
-    throw new Error(`Author with ID ${authorId} is not found`);
+    throw new Error(INVALID_AUTHOR_ID_ERROR);
   }
 
   const currentVideo = author?.videos.find(({ id }) => id === videoId);
   const otherVideos = author?.videos.filter(({ id }) => id !== videoId);
 
-  const newVideo = currentVideo ? updateVideo(currentVideo, formData) : normalizeFormData(formData);
+  const newVideo = currentVideo ? updateVideo(currentVideo, formData) : normalizeFormData(formData, lastId);
   const newVideos = otherVideos ? [...otherVideos, newVideo] : [newVideo];
 
   return { ...author, videos: newVideos };

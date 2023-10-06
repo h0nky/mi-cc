@@ -1,12 +1,13 @@
 import { Router } from '@angular/router';
-import { Observable, map, of } from 'rxjs';
+import { Observable, map, of, switchMap } from 'rxjs';
 import { Component, Input, OnInit } from '@angular/core';
-
-import { ProcessedVideo } from 'src/app/interfaces';
-import { VideoService } from 'src/app/services/videoservice/video.service';
 import { MatDialog } from '@angular/material/dialog';
-import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
+
+import { Author, ProcessedVideo } from 'src/app/interfaces';
+import { VideoService } from 'src/app/services/videoservice/video.service';
+import { DeleteConfirmationComponent } from 'src/app/components/delete-confirmation/delete-confirmation.component';
 import { DataService } from 'src/app/services/dataservice/data.service';
+import { INVALID_AUTHOR_ID_ERROR } from 'src/app/constants';
 
 
 @Component({
@@ -46,30 +47,25 @@ export class VideosTableComponent implements OnInit {
 
   onVideoDelete(videoId: number, authorName: string): void {
     const ref = this.dialog.open(DeleteConfirmationComponent);
-    
-    ref.afterClosed().subscribe(result => {
-      if (result) {
-        this.handleVideoDeletion(videoId, authorName);
-      }
-    })
+    ref.afterClosed()
+    .subscribe(result => result ? this.handleVideoDeletion(videoId, authorName) : null)
   }
 
   private handleVideoDeletion(videoId: number, authorName: string): void {
-    const payload$ = this.dataSerice.getAuthors().pipe(
-      map(
-        authors => {
-          const author = authors.find(({ name }) => name === authorName);
+    this.dataSerice.getAuthors().pipe(
+      map(authors => this.pruneAuthorVideos(authors, authorName, videoId)),
+      switchMap(updatedAuthor => this.videoService.setNewVideo(updatedAuthor, updatedAuthor.id)))
+      .subscribe(() => this.videos$ = this.videoService.getProcessedVideos());
+  }
 
-          if (!author) {
-            throw new Error('Invalid author ID');
-          }
+  private pruneAuthorVideos(authors: Author[], authorName: string, videoId: number): Author {
+    const author = authors.find(({ name }) => name === authorName);
+  
+    if (!author) {
+      throw new Error(INVALID_AUTHOR_ID_ERROR);
+    }
 
-          const newVideos = author?.videos.filter(({ id }) => id !== videoId);
-          return { ...author, videos: newVideos };
-        }
-      )
-    )
-    payload$.subscribe(payload => this.videoService.setNewVideo(payload, payload.id).subscribe()
-    );
+    const newVideos = author?.videos.filter(({ id }) => id !== videoId);
+    return { ...author, videos: newVideos };
   }
 }
