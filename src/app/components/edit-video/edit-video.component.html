@@ -2,16 +2,16 @@
 <form (ngSubmit)="onFormSubmit(formData)">
   <div class="edit-video__container">
       <div class="edit-video__input-wrapper">
-        <mi-input name="videoTitle" [(ngModel)]="formData.videoTitle" [placeholder]="placeholder" required/>
+        <mi-input name="videoTitle" [(ngModel)]="formData.videoTitle" [placeholder]="placeholder" />
       </div>
       <div class="edit-video__input-wrapper">
-        <select class="select__single" id="authorSelect" [(ngModel)]="formData.selectedAuthor" name="selectedAuthor">
+        <select class="select__single" id="authorSelect" [(ngModel)]="formData.selectedAuthor" name="selectedAuthor" required>
           <option value="">Video author</option>
           <option *ngFor="let author of authors$ | async" [value]="author.id">{{ author.name }}</option>
         </select>
       </div>
       <div class="edit-video__input-wrapper">
-        <select class="select__multiple" id="categoriesSelect" [(ngModel)]="formData.selectedCategories" name="selectedCategories" multiple>
+        <select class="select__multiple" id="categoriesSelect" [(ngModel)]="formData.selectedCategories" name="selectedCategories" multiple required>
           <option *ngFor="let category of categories$ | async" [value]="category.id">{{ category.name }}</option>
         </select>
       </div>
