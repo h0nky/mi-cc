@@ -2,8 +2,8 @@
     cursor: pointer;
     border: 1px solid var(--lighter-gray);
     min-height: 36px;
-    border-radius: 4px;
-    padding: 8px;
+    border-radius: var(--border-radius);
+    padding: var(--gap-unit) calc(var(--gap-unit) * 2);
     width: 100%;
 }
 

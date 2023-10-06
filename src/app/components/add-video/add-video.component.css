@@ -3,19 +3,19 @@ mi-input {
 }
 
 mi-button {
-    margin-right: 8px;
+    margin-right: var(--gap-unit);
 }
 
 .select__single {
     appearance: none; /* Removes default arrow button on some browsers */
     -webkit-appearance: none; /* Removes default arrow button on Safari */
     -moz-appearance: none; /* Removes default arrow button on Firefox */
-    padding: 5px 10px; 
-    border-radius: 3px; /* Add rounded corners */
+    padding: var(--gap-unit) calc(var(--gap-unit) * 2);
+    border-radius: var(--border-radius);
     cursor: pointer; /* Change cursor on hover */
     border: 1px solid var(--lighter-gray);
     min-height: 36px;
-    border-radius: 4px;
+    border-radius: var(--border-radius);
     width: 100%;
 }
 
@@ -23,12 +23,12 @@ mi-button {
     appearance: none; /* Removes default arrow button on some browsers */
     -webkit-appearance: none; /* Removes default arrow button on Safari */
     -moz-appearance: none; /* Removes default arrow button on Firefox */
-    padding: 8px 10px; 
-    border-radius: 3px; /* Add rounded corners */
+    padding: var(--gap-unit) calc(var(--gap-unit) * 2);
+    border-radius: var(--border-radius);
     cursor: pointer; /* Change cursor on hover */
     border: 1px solid var(--lighter-gray);
     min-height: 36px;
-    border-radius: 4px;
+    border-radius: var(--border-radius);
     width: 100%;
 }
 
@@ -39,22 +39,22 @@ mi-button {
 .add-video__wrapper {
     display: flex;
     flex-direction: column;
-    padding: 16px;
+    padding: calc(var(--gap-unit) * 2);
 }
 
 .add-video__input-wrapper {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 16px;
+    margin-bottom: calc(var(--gap-unit) * 2);
     align-items: center;
 }
 
 .add-video__buttons-wrapper {
     display: flex;
     width: 100%;
-    padding: 16px;
+    padding: calc(var(--gap-unit) * 2);
 }
 
 mi-button {
-    margin-right: 8px;
+    margin-right: var(--gap-unit);
 }

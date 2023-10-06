@@ -49,26 +49,27 @@ export class VideosTableComponent implements OnInit {
     
     ref.afterClosed().subscribe(result => {
       if (result) {
-        const payload$ = this.dataSerice.getAuthors().pipe(
-          map(
-            authors => {
-              const author = authors.find(({ name }) => name === authorName);
-
-              if (!author) {
-                throw new Error('Invalid author ID');
-              }
-
-              const newVideos = author?.videos.filter(({ id }) => id !== videoId);
-              return { ...author, videos: newVideos };
-            }
-          )
-        )
-        
-        payload$
-        .subscribe(payload => this.videoService.setNewVideo(payload, payload.id)
-        .subscribe()
-        );
+        this.handleVideoDeletion(videoId, authorName);
       }
     })
+  }
+
+  private handleVideoDeletion(videoId: number, authorName: string): void {
+    const payload$ = this.dataSerice.getAuthors().pipe(
+      map(
+        authors => {
+          const author = authors.find(({ name }) => name === authorName);
+
+          if (!author) {
+            throw new Error('Invalid author ID');
+          }
+
+          const newVideos = author?.videos.filter(({ id }) => id !== videoId);
+          return { ...author, videos: newVideos };
+        }
+      )
+    )
+    payload$.subscribe(payload => this.videoService.setNewVideo(payload, payload.id).subscribe()
+    );
   }
 }

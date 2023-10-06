@@ -7,6 +7,9 @@
   --azure: #007DFF;
   --january-blue: #00A5BB;
   --pickled-radish: #F0143E;
+
+  --gap-unit: 8px;
+  --border-radius: 4px;
 }
 
 body {

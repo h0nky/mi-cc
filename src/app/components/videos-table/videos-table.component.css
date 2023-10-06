@@ -1,6 +1,6 @@
 .wrapper {
   overflow: auto;
-  padding-bottom: 16px;
+  padding-bottom: calc(var(--gap-unit) * 2);
 }
 
 .table {
@@ -10,7 +10,7 @@
 
 .table th,
 .table td {
-  padding: 16px;
+  padding: calc(var(--gap-unit) * 2);
   border: 1px solid var(--lighter-gray);
   text-align: left;
 }
@@ -21,7 +21,7 @@
 
 .search-input-wrapper {
   display: flex;
-  margin-bottom: 16px;
+  margin-bottom: calc(var(--gap-unit) * 2);
   height: 36px;
 }
 
