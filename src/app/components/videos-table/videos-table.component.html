@@ -25,7 +25,7 @@
         <td>
           <div class="table-options-cell">
             <mi-button buttonType="transparent" [text]="'Edit'" (click)="onVideoEdit(video.id, video.author)" />
-            <mi-button buttonType="tertiary" [text]="'Delete'" (click)="onVideoDelete()" />
+            <mi-button buttonType="tertiary" [text]="'Delete'" (click)="onVideoDelete(video.id, video.author)" />
           </div>
         </td>
       </tr>

@@ -1,0 +1,8 @@
+<div class="delete-modal">
+    <h2>Delete Confirmation</h2>
+    <p>Are you sure you want to delete this item?</p>
+    <div class="delete-modal__button-wrapper">
+        <mi-button buttonType="transparent" (click)="confirmDelete()" [text]="'Delete'"></mi-button>
+        <mi-button buttonType="tertiary" (click)="cancelDelete()" [text]="'Cancel'"></mi-button>
+    </div>
+  </div>

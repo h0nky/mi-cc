@@ -1,0 +1,21 @@
+.delete-modal {
+    background: var(--white);
+    padding: 32px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+h2 {
+    text-align: center;
+}
+
+p {
+    padding: 32px 16px;
+}
+
+.delete-modal__button-wrapper {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 32px;
+}

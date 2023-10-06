@@ -4,6 +4,9 @@ import { Component, Input, OnInit } from '@angular/core';
 
 import { ProcessedVideo } from 'src/app/interfaces';
 import { VideoService } from 'src/app/services/videoservice/video.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
+import { DataService } from 'src/app/services/dataservice/data.service';
 
 
 @Component({
@@ -18,7 +21,9 @@ export class VideosTableComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private videoService: VideoService
+    private videoService: VideoService,
+    private dataSerice: DataService,
+    private dialog: MatDialog
   ) {
     this.videos$ = of([]);
     this.filterCriteria = '';
@@ -39,7 +44,31 @@ export class VideosTableComponent implements OnInit {
     this.router.navigate(['video', itemId, { params: authorName }]);
   }
 
-  onVideoDelete(): void {
-    console.log('onVideoDelete!');
+  onVideoDelete(videoId: number, authorName: string): void {
+    const ref = this.dialog.open(DeleteConfirmationComponent);
+    
+    ref.afterClosed().subscribe(result => {
+      if (result) {
+        const payload$ = this.dataSerice.getAuthors().pipe(
+          map(
+            authors => {
+              const author = authors.find(({ name }) => name === authorName);
+
+              if (!author) {
+                throw new Error('Invalid author ID');
+              }
+
+              const newVideos = author?.videos.filter(({ id }) => id !== videoId);
+              return { ...author, videos: newVideos };
+            }
+          )
+        )
+        
+        payload$
+        .subscribe(payload => this.videoService.setNewVideo(payload, payload.id)
+        .subscribe()
+        );
+      }
+    })
   }
 }
